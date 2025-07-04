@@ -1,102 +1,84 @@
-
 # coderpad
 
 A playful, hackable collaborative text editor toy written in Go.
 
+---
 
-## Features
+## 🚀 Quick Start
 
-- Super lightweight (~4MB)
-- Easy to run (single binary, or just `go run`!)
-- Export/import your document content
+1. **Start the server** (in one terminal):
+   ```sh
+   go run server/main.go
+   # or
+   go run main.go
+   ```
+   _Default address: `:8080`_
+
+2. **Start a client** (in another terminal):
+   ```sh
+   go run client/*.go
+   ```
+   _Spin up multiple clients for collaborative editing!_
+
+---
+
+## ✨ Features
+
+- Super lightweight (~4MB binary)
+- Easy to run (single binary or `go run`)
+- Export/import document content
 - Built for hacking and learning
+- Collaborative editing (CRDT-backed)
 - Not for production—just for fun!
 
-## Keybindings
+## ⌨️ Keybindings
 
-| Action         | Key |
-|--------------|:-----:|
-| Exit |  `Esc`, `Ctrl+C` |
-| Save to document |  `Ctrl+S` |
-| Load from document |  `Ctrl+L` |
-| Move cursor left |  `Left arrow key`, `Ctrl+B` |
-| Move cursor right |  `Right arrow key`, `Ctrl+F` |
-| Move cursor up |  `Up arrow key`, `Ctrl+P` |
-| Move cursor down |  `Down arrow key`, `Ctrl+N` |
-| Move cursor to start |  `Home` |
-| Move cursor to end |  `End` |
-| Delete characters |  `Backspace`, `Delete` |
+| Action                | Key(s)                        |
+|---------------------- |:-----------------------------:|
+| Exit                  | `Esc`, `Ctrl+C`               |
+| Save document         | `Ctrl+S`                      |
+| Load document         | `Ctrl+L`                      |
+| Move cursor left      | `Left`, `Ctrl+B`              |
+| Move cursor right     | `Right`, `Ctrl+F`             |
+| Move cursor up        | `Up`, `Ctrl+P`                |
+| Move cursor down      | `Down`, `Ctrl+N`              |
+| Move to line start    | `Home`                        |
+| Move to line end      | `End`                         |
+| Delete character      | `Backspace`, `Delete`         |
 
-## How to play
+---
 
-Start the server (in one terminal):
+## 🛠 Usage
 
-```
-./coderpad-server
-```
-
+### Server
 ```
 Usage of coderpad-server:
   -addr string
         Server's network address (default ":8080")
 ```
 
-Then start a client (in another terminal):
-
-```
-./coderpad
-```
-
+### Client
 ```
 Usage of coderpad:
-  -debug
-        Enable debugging mode to show more verbose logs
-  -file string
-        The file to load the coderpad content from
-  -login
-        Enable the login prompt for the server
-  -secure
-        Enable a secure WebSocket connection (wss://)
-  -server string
-        The network address of the server (default "localhost:8080")
+  -debug         Enable verbose debug logs
+  -file string   Load coderpad content from file
+  -login         Enable login prompt
+  -secure        Use secure WebSocket (wss://)
+  -server string Server address (default "localhost:8080")
 ```
 
-Example play:
+---
 
-- Connect to a server: `coderpad -server coderpad.test`
-- Enable login prompt: `coderpad -server coderpad.test -login`
-- Specify a file to save to/load from: `coderpad -server coderpad.test -file example.txt`
-- Enable debugging mode: `coderpad -server coderpad.test -debug`
+## 🧠 How does it work?
 
-### Local setup (for hackers)
-
-To start the server:
-
-```
-go run server/main.go
-```
-
-To start the client:
-
-```
-go run client/*.go
-```
-
-(Spin up at least 2 clients for the full collaborative toy experience! It also works with a single client.)
-
-## How does it work?
-
-- Each client has a CRDT-backed local state (document).
-- The CRDT is a sequence of characters with some attributes.
+- Each client maintains a CRDT-backed local document state.
 - The server:
-  - establishes connections with clients
-  - keeps a list of active connections
-  - broadcasts operations from one client to all others
-- Clients connect and send operations to the server.
-- The TUI:
-  - Renders document content
-  - Handles key events
-  - Generates and dispatches payloads on key presses
+  - Manages client connections
+  - Broadcasts operations to all clients
+- Clients:
+  - Connect and send operations to the server
+  - Render the document in a TUI
+  - Handle key events and dispatch changes
 
 ---
 
